@@ -1,13 +1,92 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fdfbf7;
-  --foreground: #1c1917;
+  --font-serif: var(--font-serif), "Playfair Display", Georgia, serif;
+  --font-sans: var(--font-sans), "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Brand Palette */
+  --primary-burgundy: #800020;
+  --primary-burgundy-dark: #580016;
+  --secondary-gold: #D4AF37;
+  --secondary-gold-light: #F7E7CE;
+  --bg-warm: #FAF8F5;
+  --surface-white: #FFFFFF;
+  --text-charcoal: #242424;
+  --text-muted: #777777;
+  --border-soft: #EAE4DC;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background-color: var(--bg-warm);
+  color: var(--text-charcoal);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Custom Typography Utility Helpers */
+.font-serif {
+  font-family: var(--font-serif), Georgia, serif;
+}
+
+.font-sans {
+  font-family: var(--font-sans), sans-serif;
+}
+
+/* Subtle Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAF8F5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D4AF37;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #800020;
+}
+
+/* Indian Wedding Traditional Ornamentation */
+.gold-shimmer-border {
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  box-shadow: 0 4px 20px -2px rgba(212, 175, 55, 0.15);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #B8860B 0%, #D4AF37 50%, #AA771C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.burgundy-gradient-btn {
+  background: linear-gradient(135deg, #800020 0%, #5C0017 100%);
+  color: #FFFFFF;
+  transition: all 0.3s ease;
+}
+
+.burgundy-gradient-btn:hover {
+  background: linear-gradient(135deg, #990026 0%, #70001C 100%);
+  box-shadow: 0 10px 25px -5px rgba(128, 0, 32, 0.4);
+}
+
+/* Glassmorphism Surface */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(234, 228, 220, 0.9);
+}
+
+.glass-panel-gold {
+  background: rgba(255, 253, 249, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 175, 55, 0.35);
 }
 
 @keyframes spinSlow {
@@ -20,5 +99,18 @@ body {
 }
 
 .animate-spin-slow {
-  animation: spinSlow 8s linear infinite;
+  animation: spinSlow 12s linear infinite;
+}
+
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float {
+  animation: floatGentle 4s ease-in-out infinite;
 }

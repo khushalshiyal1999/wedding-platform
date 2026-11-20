@@ -22,27 +22,27 @@ export default function WelcomeScreen({
   accentColor = '#D4AF37',
   primaryColor = '#800020',
 }: WelcomeScreenProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [opening, setOpening] = useState(false);
 
   const handleOpen = () => {
-    setIsOpen(true);
-    // Fire celebration confetti
+    setOpening(true);
     try {
       confetti({
-        particleCount: 80,
-        spread: 70,
+        particleCount: 100,
+        spread: 80,
         origin: { y: 0.6 },
-        colors: [accentColor, primaryColor, '#FFD700', '#FF69B4'],
+        colors: [accentColor, primaryColor, '#FFD700', '#FFFFFF', '#FFB6C1'],
       });
     } catch {
       // ignore
     }
     setTimeout(() => {
       onEnter();
-    }, 600);
+    }, 700);
   };
 
   const formattedDate = new Date(weddingDate).toLocaleDateString('en-US', {
+    weekday: 'long',
     month: 'long',
     day: 'numeric',
     year: 'numeric',
@@ -54,70 +54,91 @@ export default function WelcomeScreen({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0, scale: 1.05 }}
-        transition={{ duration: 0.6 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/90 backdrop-blur-md"
+        transition={{ duration: 0.6, ease: 'easeInOut' }}
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/85 backdrop-blur-md overflow-y-auto"
       >
         <motion.div
-          initial={{ scale: 0.9, y: 20 }}
+          initial={{ scale: 0.88, y: 25 }}
           animate={{ scale: 1, y: 0 }}
-          className="relative max-w-lg w-full rounded-3xl p-8 sm:p-12 text-center shadow-2xl border border-amber-300/40 overflow-hidden"
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="relative max-w-lg w-full rounded-3xl p-8 sm:p-12 text-center shadow-2xl border-2 border-[#D4AF37]/50 overflow-hidden my-auto"
           style={{
-            background: 'linear-gradient(145deg, #FFFDF9 0%, #FBF6EE 100%)',
+            background: 'linear-gradient(150deg, #FFFDF9 0%, #FAF5EC 50%, #F5ECDD 100%)',
           }}
         >
-          {/* Decorative Corner Ornaments */}
-          <div className="absolute top-3 left-3 text-amber-500/40 select-none text-2xl font-serif">❖</div>
-          <div className="absolute top-3 right-3 text-amber-500/40 select-none text-2xl font-serif">❖</div>
-          <div className="absolute bottom-3 left-3 text-amber-500/40 select-none text-2xl font-serif">❖</div>
-          <div className="absolute bottom-3 right-3 text-amber-500/40 select-none text-2xl font-serif">❖</div>
+          {/* Traditional Ornate Corners */}
+          <div className="absolute top-3 left-3 text-[#D4AF37] select-none text-xl sm:text-2xl font-serif opacity-80">
+            ❖
+          </div>
+          <div className="absolute top-3 right-3 text-[#D4AF37] select-none text-xl sm:text-2xl font-serif opacity-80">
+            ❖
+          </div>
+          <div className="absolute bottom-3 left-3 text-[#D4AF37] select-none text-xl sm:text-2xl font-serif opacity-80">
+            ❖
+          </div>
+          <div className="absolute bottom-3 right-3 text-[#D4AF37] select-none text-xl sm:text-2xl font-serif opacity-80">
+            ❖
+          </div>
 
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.2, type: 'spring' }}
-            className="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center shadow-inner"
-            style={{ backgroundColor: `${accentColor}25` }}
-          >
-            <Sparkles className="w-8 h-8" style={{ color: accentColor }} />
-          </motion.div>
+          {/* Auspicious Sanskrit Blessing */}
+          <div className="mb-4">
+            <p className="text-xs sm:text-sm font-serif text-[#800020] font-semibold tracking-widest uppercase">
+              ॥ श्री गणेशाय नमः ॥
+            </p>
+            <p className="text-[11px] font-serif italic text-stone-600 mt-1 max-w-xs mx-auto leading-relaxed">
+              वक्रतुण्ड महाकाय सूर्यकोटि समप्रभ ।<br />
+              निर्विघ्नं कुरु मे देव सर्वकार्येषु सर्वदा ॥
+            </p>
+          </div>
 
-          <p className="text-xs uppercase tracking-[0.3em] font-semibold text-stone-500 mb-2">
-            Wedding Invitation
+          <div className="flex items-center justify-center gap-3 my-3">
+            <span className="h-[1px] w-12 bg-[#D4AF37]/60"></span>
+            <span className="text-[#D4AF37] text-sm">⚜</span>
+            <span className="h-[1px] w-12 bg-[#D4AF37]/60"></span>
+          </div>
+
+          <p className="text-[11px] uppercase tracking-[0.3em] font-semibold text-stone-500 mb-2">
+            The Wedding Celebration Of
           </p>
 
           <h2
-            className="text-3xl sm:text-4xl font-serif font-bold tracking-tight mb-3"
+            className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold tracking-tight mb-2"
             style={{ color: primaryColor }}
           >
-            {groomName} &amp; {brideName}
+            {groomName}
+            <span className="block text-2xl sm:text-3xl font-light italic text-[#D4AF37] my-1">
+              &amp;
+            </span>
+            {brideName}
           </h2>
 
-          <div className="flex items-center justify-center gap-3 my-4">
-            <span className="h-[1px] w-12 bg-amber-300"></span>
-            <Heart className="w-4 h-4 fill-amber-500 text-amber-500" />
-            <span className="h-[1px] w-12 bg-amber-300"></span>
+          <div className="flex items-center justify-center gap-2 my-4">
+            <span className="h-[1px] w-10 bg-[#D4AF37]/60"></span>
+            <Heart className="w-4 h-4 fill-[#800020] text-[#800020]" />
+            <span className="h-[1px] w-10 bg-[#D4AF37]/60"></span>
           </div>
 
-          <p className="text-sm font-serif italic text-stone-600 mb-8">
-            Request the honour of your gracious presence
-            <br />
-            <span className="font-semibold text-stone-800 not-italic font-sans text-xs uppercase tracking-wider mt-1 block">
-              {formattedDate}
-            </span>
+          <p className="text-xs sm:text-sm font-serif italic text-stone-700 mb-1">
+            Request the honour of your presence to grace the wedding ceremonies
+          </p>
+
+          <p className="font-semibold text-stone-900 not-italic font-sans text-xs uppercase tracking-wider mb-8">
+            {formattedDate}
           </p>
 
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleOpen}
-            className="relative px-8 py-3.5 rounded-full font-serif font-semibold text-white shadow-xl transition-all flex items-center justify-center gap-2 mx-auto cursor-pointer"
+            disabled={opening}
+            className="relative px-8 py-3.5 rounded-full font-serif font-semibold text-white shadow-xl transition-all flex items-center justify-center gap-2 mx-auto cursor-pointer border border-[#D4AF37]/60"
             style={{
               backgroundColor: primaryColor,
               boxShadow: `0 10px 25px -5px ${primaryColor}60`,
             }}
           >
-            <span>Open Invitation</span>
-            <Sparkles className="w-4 h-4 text-amber-300" />
+            <span>{opening ? 'Opening Celebration...' : 'Open Invitation'}</span>
+            <Sparkles className="w-4 h-4 text-[#D4AF37]" />
           </motion.button>
         </motion.div>
       </motion.div>

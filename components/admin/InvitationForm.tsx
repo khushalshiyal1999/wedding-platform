@@ -20,6 +20,9 @@ import {
   AlertCircle,
   Sparkles,
   Music,
+  Check,
+  ChevronRight,
+  User,
 } from 'lucide-react';
 
 interface InvitationFormProps {
@@ -94,7 +97,7 @@ export default function InvitationForm({
     whatsappNumber: initialData?.whatsappNumber || '',
   });
 
-  // Slug auto-generator
+  // Slug generator
   const generateSlug = () => {
     if (formData.groomName && formData.brideName) {
       const g = formData.groomName.toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -104,7 +107,10 @@ export default function InvitationForm({
   };
 
   // Upload file helper
-  const handleFileUpload = async (file: File, targetField: 'groomImage' | 'brideImage' | 'musicUrl') => {
+  const handleFileUpload = async (
+    file: File,
+    targetField: 'groomImage' | 'brideImage' | 'musicUrl'
+  ) => {
     setUploadingField(targetField);
     try {
       const form = new FormData();
@@ -128,14 +134,14 @@ export default function InvitationForm({
     }
   };
 
-  // Events handler
+  // Event handlers
   const addEvent = () => {
     setFormData((prev) => ({
       ...prev,
       events: [
         ...(prev.events || []),
         {
-          eventName: 'New Celebration',
+          eventName: 'New Ceremony',
           eventDate: prev.weddingDate || '',
           eventTime: '10:00 AM',
           eventVenue: prev.venueName || '',
@@ -161,7 +167,7 @@ export default function InvitationForm({
     }));
   };
 
-  // Gallery handler
+  // Gallery handlers
   const addGalleryImage = () => {
     setFormData((prev) => ({
       ...prev,
@@ -169,7 +175,7 @@ export default function InvitationForm({
         ...(prev.gallery || []),
         {
           imageUrl: '',
-          altText: 'Wedding moment',
+          altText: 'Wedding celebration moment',
           displayOrder: (prev.gallery?.length || 0) + 1,
         },
       ],
@@ -192,7 +198,7 @@ export default function InvitationForm({
     }));
   };
 
-  // Submit Handler
+  // Form Submission
   const handleSubmit = async (targetStatus?: 'draft' | 'published') => {
     setError(null);
     setLoading(true);
@@ -226,19 +232,19 @@ export default function InvitationForm({
   };
 
   const steps = [
-    { num: 1, label: 'Basic Info', icon: Calendar },
-    { num: 2, label: 'Couple Info', icon: Heart },
+    { num: 1, label: 'Basic Details', icon: Calendar },
+    { num: 2, label: 'Couple Profile', icon: Heart },
     { num: 3, label: 'Events', icon: Clock },
-    { num: 4, label: 'Venue', icon: MapPin },
-    { num: 5, label: 'Media', icon: ImageIcon },
-    { num: 6, label: 'Design', icon: Palette },
+    { num: 4, label: 'Destination', icon: MapPin },
+    { num: 5, label: 'Media & Music', icon: ImageIcon },
+    { num: 6, label: 'Design & Style', icon: Palette },
     { num: 7, label: 'Review & Publish', icon: CheckCircle },
   ];
 
   return (
-    <div className="bg-white rounded-3xl border border-stone-200 shadow-sm overflow-hidden">
-      {/* Wizard Step Progress Header */}
-      <div className="p-6 border-b border-stone-200 bg-stone-50/50">
+    <div className="bg-white rounded-3xl border border-[#EAE4DC] shadow-sm overflow-hidden">
+      {/* Studio Stepper Bar */}
+      <div className="p-6 border-b border-[#EAE4DC] bg-[#FAF8F5]/80">
         <div className="flex items-center justify-between overflow-x-auto gap-2 pb-2">
           {steps.map((s) => {
             const Icon = s.icon;
@@ -250,18 +256,26 @@ export default function InvitationForm({
                 key={s.num}
                 type="button"
                 onClick={() => setCurrentStep(s.num)}
-                className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                className={`flex items-center gap-2.5 px-4 py-2.5 rounded-2xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                   isCurrent
-                    ? 'bg-amber-600 text-white shadow-md'
+                    ? 'bg-[#800020] text-white shadow-md shadow-[#800020]/25'
                     : isDone
-                    ? 'bg-amber-100 text-amber-900'
-                    : 'bg-stone-100 text-stone-500 hover:bg-stone-200'
+                    ? 'bg-[#FAF8F5] text-[#800020] border border-[#EAE4DC]'
+                    : 'bg-white text-[#777777] border border-[#EAE4DC] hover:text-[#242424]'
                 }`}
               >
-                <Icon className="w-3.5 h-3.5" />
-                <span>
-                  {s.num}. {s.label}
+                <span
+                  className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${
+                    isCurrent
+                      ? 'bg-[#D4AF37] text-[#242424] font-bold'
+                      : isDone
+                      ? 'bg-emerald-600 text-white'
+                      : 'bg-stone-200 text-[#777777]'
+                  }`}
+                >
+                  {isDone ? <Check className="w-3 h-3" /> : s.num}
                 </span>
+                <span>{s.label}</span>
               </button>
             );
           })}
@@ -280,12 +294,21 @@ export default function InvitationForm({
         {/* STEP 1: Basic Information */}
         {currentStep === 1 && (
           <div className="space-y-6 max-w-2xl">
-            <h2 className="text-xl font-serif font-bold text-stone-900">Step 1: Basic Information</h2>
-            <p className="text-xs text-stone-500">Provide the couple’s names, wedding date, and unique public slug.</p>
+            <div>
+              <span className="text-[11px] uppercase tracking-widest font-bold text-[#D4AF37]">
+                Step 1 of 7
+              </span>
+              <h2 className="text-2xl font-serif font-bold text-[#242424] mt-1">
+                Basic Wedding Information
+              </h2>
+              <p className="text-xs text-[#777777] mt-1">
+                Set couple names, wedding date and custom public URL slug.
+              </p>
+            </div>
 
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#242424] uppercase tracking-wider mb-2">
                   Groom Name *
                 </label>
                 <input
@@ -294,12 +317,12 @@ export default function InvitationForm({
                   value={formData.groomName || ''}
                   onChange={(e) => setFormData({ ...formData, groomName: e.target.value })}
                   placeholder="e.g. Aarav Sharma"
-                  className="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:border-amber-600"
+                  className="w-full px-4 py-3 rounded-xl border border-[#EAE4DC] bg-[#FAF8F5] text-sm text-[#242424] focus:outline-none focus:border-[#800020] focus:bg-white transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#242424] uppercase tracking-wider mb-2">
                   Bride Name *
                 </label>
                 <input
@@ -308,26 +331,27 @@ export default function InvitationForm({
                   value={formData.brideName || ''}
                   onChange={(e) => setFormData({ ...formData, brideName: e.target.value })}
                   placeholder="e.g. Priya Patel"
-                  className="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:border-amber-600"
+                  className="w-full px-4 py-3 rounded-xl border border-[#EAE4DC] bg-[#FAF8F5] text-sm text-[#242424] focus:outline-none focus:border-[#800020] focus:bg-white transition-all"
                 />
               </div>
             </div>
 
             <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider">
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-xs font-semibold text-[#242424] uppercase tracking-wider">
                   Unique URL Slug *
                 </label>
                 <button
                   type="button"
                   onClick={generateSlug}
-                  className="text-xs text-amber-600 hover:text-amber-700 font-semibold cursor-pointer"
+                  className="text-xs text-[#800020] hover:text-[#580016] font-semibold cursor-pointer flex items-center gap-1"
                 >
-                  Generate from names
+                  <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+                  <span>Generate from names</span>
                 </button>
               </div>
-              <div className="flex items-center rounded-xl border border-stone-300 overflow-hidden bg-stone-50">
-                <span className="px-3.5 py-2.5 text-xs text-stone-500 font-mono border-r border-stone-200">
+              <div className="flex items-center rounded-xl border border-[#EAE4DC] overflow-hidden bg-[#FAF8F5]">
+                <span className="px-4 py-3 text-xs text-[#777777] font-mono border-r border-[#EAE4DC] bg-white">
                   /wedding/
                 </span>
                 <input
@@ -341,17 +365,17 @@ export default function InvitationForm({
                     })
                   }
                   placeholder="aarav-weds-priya"
-                  className="flex-1 px-4 py-2.5 bg-white text-sm font-mono focus:outline-none"
+                  className="flex-1 px-4 py-3 bg-white text-sm font-mono text-[#242424] focus:outline-none"
                 />
               </div>
-              <p className="text-[11px] text-stone-500 mt-1">
-                Only lowercase letters, numbers and hyphens are allowed. Must be globally unique.
+              <p className="text-[11px] text-[#777777] mt-1.5">
+                Lowercase letters, numbers and hyphens. Guests will visit: /wedding/<strong>{formData.slug || 'your-slug'}</strong>
               </p>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#242424] uppercase tracking-wider mb-2">
                   Wedding Date *
                 </label>
                 <input
@@ -359,33 +383,33 @@ export default function InvitationForm({
                   required
                   value={formData.weddingDate || ''}
                   onChange={(e) => setFormData({ ...formData, weddingDate: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:border-amber-600"
+                  className="w-full px-4 py-3 rounded-xl border border-[#EAE4DC] bg-[#FAF8F5] text-sm text-[#242424] focus:outline-none focus:border-[#800020] focus:bg-white transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#242424] uppercase tracking-wider mb-2">
                   Wedding Time
                 </label>
                 <input
                   type="time"
                   value={formData.weddingTime || '18:00'}
                   onChange={(e) => setFormData({ ...formData, weddingTime: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:border-amber-600"
+                  className="w-full px-4 py-3 rounded-xl border border-[#EAE4DC] bg-[#FAF8F5] text-sm text-[#242424] focus:outline-none focus:border-[#800020] focus:bg-white transition-all"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
-                Invitation Description / Message
+              <label className="block text-xs font-semibold text-[#242424] uppercase tracking-wider mb-2">
+                Invitation Welcome Message
               </label>
               <textarea
                 rows={3}
                 value={formData.description || ''}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Together with their families, joyfully invite you..."
-                className="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:border-amber-600"
+                placeholder="Together with their families, joyfully invite you to celebrate our sacred wedding ceremonies..."
+                className="w-full px-4 py-3 rounded-xl border border-[#EAE4DC] bg-[#FAF8F5] text-sm text-[#242424] focus:outline-none focus:border-[#800020] focus:bg-white transition-all"
               />
             </div>
           </div>
@@ -394,16 +418,30 @@ export default function InvitationForm({
         {/* STEP 2: Couple Information */}
         {currentStep === 2 && (
           <div className="space-y-8 max-w-3xl">
-            <h2 className="text-xl font-serif font-bold text-stone-900">Step 2: Couple Information</h2>
-            <p className="text-xs text-stone-500">Provide photographs, introductions, and parents’ names.</p>
+            <div>
+              <span className="text-[11px] uppercase tracking-widest font-bold text-[#D4AF37]">
+                Step 2 of 7
+              </span>
+              <h2 className="text-2xl font-serif font-bold text-[#242424] mt-1">
+                Couple Profiles &amp; Blessings
+              </h2>
+              <p className="text-xs text-[#777777] mt-1">
+                Upload photos, specify parents&apos; names and write short biographical intros.
+              </p>
+            </div>
 
             <div className="grid md:grid-cols-2 gap-8">
               {/* Groom Details */}
-              <div className="p-6 rounded-2xl border border-stone-200 bg-stone-50/50 space-y-4">
-                <h3 className="font-serif font-bold text-base text-stone-900">Groom Information</h3>
+              <div className="p-6 rounded-3xl border border-[#EAE4DC] bg-[#FAF8F5]/60 space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="p-2 rounded-xl bg-[#800020] text-white">
+                    <User className="w-4 h-4 text-[#D4AF37]" />
+                  </span>
+                  <h3 className="font-serif font-bold text-base text-[#242424]">Groom Information</h3>
+                </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-semibold text-[#242424] uppercase mb-1">
                     Groom Photo URL
                   </label>
                   <input
@@ -411,10 +449,10 @@ export default function InvitationForm({
                     value={formData.groomImage || ''}
                     onChange={(e) => setFormData({ ...formData, groomImage: e.target.value })}
                     placeholder="https://..."
-                    className="w-full px-3.5 py-2 rounded-xl border border-stone-300 text-xs bg-white focus:outline-none focus:border-amber-600 mb-2"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#EAE4DC] text-xs bg-white text-[#242424] focus:outline-none focus:border-[#800020] mb-2"
                   />
-                  <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-stone-200 hover:bg-stone-300 text-stone-700 text-xs cursor-pointer">
-                    <Upload className="w-3.5 h-3.5" />
+                  <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white border border-[#EAE4DC] text-[#242424] text-xs hover:border-[#800020] cursor-pointer shadow-2xs">
+                    <Upload className="w-3.5 h-3.5 text-[#D4AF37]" />
                     <span>{uploadingField === 'groomImage' ? 'Uploading...' : 'Upload Image File'}</span>
                     <input
                       type="file"
@@ -429,26 +467,26 @@ export default function InvitationForm({
                 </div>
 
                 {formData.groomImage && (
-                  <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-amber-400">
+                  <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-[#D4AF37] shadow-md">
                     <Image src={formData.groomImage} alt="Groom" fill className="object-cover" />
                   </div>
                 )}
 
                 <div>
-                  <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1">
-                    Parents’ Names
+                  <label className="block text-xs font-semibold text-[#242424] uppercase mb-1">
+                    Parents&apos; Names
                   </label>
                   <input
                     type="text"
                     value={formData.groomParents || ''}
                     onChange={(e) => setFormData({ ...formData, groomParents: e.target.value })}
                     placeholder="Son of Smt. Sunita & Shri Rajesh Sharma"
-                    className="w-full px-3.5 py-2 rounded-xl border border-stone-300 text-xs bg-white focus:outline-none focus:border-amber-600"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#EAE4DC] text-xs bg-white text-[#242424] focus:outline-none focus:border-[#800020]"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-semibold text-[#242424] uppercase mb-1">
                     Short Introduction
                   </label>
                   <textarea
@@ -456,17 +494,22 @@ export default function InvitationForm({
                     value={formData.groomDescription || ''}
                     onChange={(e) => setFormData({ ...formData, groomDescription: e.target.value })}
                     placeholder="A few words about the groom..."
-                    className="w-full px-3.5 py-2 rounded-xl border border-stone-300 text-xs bg-white focus:outline-none focus:border-amber-600"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#EAE4DC] text-xs bg-white text-[#242424] focus:outline-none focus:border-[#800020]"
                   />
                 </div>
               </div>
 
               {/* Bride Details */}
-              <div className="p-6 rounded-2xl border border-stone-200 bg-stone-50/50 space-y-4">
-                <h3 className="font-serif font-bold text-base text-stone-900">Bride Information</h3>
+              <div className="p-6 rounded-3xl border border-[#EAE4DC] bg-[#FAF8F5]/60 space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="p-2 rounded-xl bg-[#800020] text-white">
+                    <Heart className="w-4 h-4 text-[#D4AF37]" />
+                  </span>
+                  <h3 className="font-serif font-bold text-base text-[#242424]">Bride Information</h3>
+                </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-semibold text-[#242424] uppercase mb-1">
                     Bride Photo URL
                   </label>
                   <input
@@ -474,10 +517,10 @@ export default function InvitationForm({
                     value={formData.brideImage || ''}
                     onChange={(e) => setFormData({ ...formData, brideImage: e.target.value })}
                     placeholder="https://..."
-                    className="w-full px-3.5 py-2 rounded-xl border border-stone-300 text-xs bg-white focus:outline-none focus:border-amber-600 mb-2"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#EAE4DC] text-xs bg-white text-[#242424] focus:outline-none focus:border-[#800020] mb-2"
                   />
-                  <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-stone-200 hover:bg-stone-300 text-stone-700 text-xs cursor-pointer">
-                    <Upload className="w-3.5 h-3.5" />
+                  <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white border border-[#EAE4DC] text-[#242424] text-xs hover:border-[#800020] cursor-pointer shadow-2xs">
+                    <Upload className="w-3.5 h-3.5 text-[#D4AF37]" />
                     <span>{uploadingField === 'brideImage' ? 'Uploading...' : 'Upload Image File'}</span>
                     <input
                       type="file"
@@ -492,26 +535,26 @@ export default function InvitationForm({
                 </div>
 
                 {formData.brideImage && (
-                  <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-amber-400">
+                  <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-[#D4AF37] shadow-md">
                     <Image src={formData.brideImage} alt="Bride" fill className="object-cover" />
                   </div>
                 )}
 
                 <div>
-                  <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1">
-                    Parents’ Names
+                  <label className="block text-xs font-semibold text-[#242424] uppercase mb-1">
+                    Parents&apos; Names
                   </label>
                   <input
                     type="text"
                     value={formData.brideParents || ''}
                     onChange={(e) => setFormData({ ...formData, brideParents: e.target.value })}
                     placeholder="Daughter of Smt. Meena & Shri Dinesh Patel"
-                    className="w-full px-3.5 py-2 rounded-xl border border-stone-300 text-xs bg-white focus:outline-none focus:border-amber-600"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#EAE4DC] text-xs bg-white text-[#242424] focus:outline-none focus:border-[#800020]"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-semibold text-[#242424] uppercase mb-1">
                     Short Introduction
                   </label>
                   <textarea
@@ -519,7 +562,7 @@ export default function InvitationForm({
                     value={formData.brideDescription || ''}
                     onChange={(e) => setFormData({ ...formData, brideDescription: e.target.value })}
                     placeholder="A few words about the bride..."
-                    className="w-full px-3.5 py-2 rounded-xl border border-stone-300 text-xs bg-white focus:outline-none focus:border-amber-600"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#EAE4DC] text-xs bg-white text-[#242424] focus:outline-none focus:border-[#800020]"
                   />
                 </div>
               </div>
@@ -532,30 +575,37 @@ export default function InvitationForm({
           <div className="space-y-6 max-w-3xl">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-xl font-serif font-bold text-stone-900">Step 3: Wedding Events &amp; Ceremonies</h2>
-                <p className="text-xs text-stone-500">Add, edit, and organize events like Haldi, Mehndi, Sangeet, and Reception.</p>
+                <span className="text-[11px] uppercase tracking-widest font-bold text-[#D4AF37]">
+                  Step 3 of 7
+                </span>
+                <h2 className="text-2xl font-serif font-bold text-[#242424] mt-1">
+                  Ceremonies &amp; Event Schedule
+                </h2>
+                <p className="text-xs text-[#777777] mt-1">
+                  Configure timeline cards for Haldi, Mehndi, Sangeet, Wedding, and Reception.
+                </p>
               </div>
               <button
                 type="button"
                 onClick={addEvent}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-600 text-white text-xs font-semibold shadow hover:bg-amber-700 cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#800020] text-white text-xs font-semibold shadow-xs hover:bg-[#580016] cursor-pointer"
               >
-                <Plus className="w-4 h-4" />
+                <Plus className="w-4 h-4 text-[#D4AF37]" />
                 <span>Add Event</span>
               </button>
             </div>
 
             <div className="space-y-4">
               {formData.events?.map((evt, idx) => (
-                <div key={idx} className="p-5 rounded-2xl border border-stone-200 bg-stone-50/60 relative space-y-4">
-                  <div className="flex items-center justify-between border-b border-stone-200 pb-3">
-                    <span className="text-xs font-bold uppercase tracking-wider text-amber-700">
-                      Event #{idx + 1}
+                <div key={idx} className="p-6 rounded-3xl border border-[#EAE4DC] bg-[#FAF8F5]/70 relative space-y-4">
+                  <div className="flex items-center justify-between border-b border-[#EAE4DC] pb-3">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#800020]">
+                      Ceremony #{idx + 1}: {evt.eventName || 'Untitled Event'}
                     </span>
                     <button
                       type="button"
                       onClick={() => removeEvent(idx)}
-                      className="text-stone-400 hover:text-rose-600 cursor-pointer p-1"
+                      className="text-[#777777] hover:text-rose-600 cursor-pointer p-1 transition-colors"
                       title="Remove Event"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -564,7 +614,7 @@ export default function InvitationForm({
 
                   <div className="grid sm:grid-cols-3 gap-3">
                     <div>
-                      <label className="block text-[11px] font-semibold text-stone-600 uppercase mb-1">
+                      <label className="block text-[11px] font-semibold text-[#242424] uppercase mb-1">
                         Event Name *
                       </label>
                       <input
@@ -573,12 +623,12 @@ export default function InvitationForm({
                         value={evt.eventName}
                         onChange={(e) => updateEvent(idx, 'eventName', e.target.value)}
                         placeholder="Haldi / Mehndi / Wedding"
-                        className="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white"
+                        className="w-full px-3 py-2 rounded-xl border border-[#EAE4DC] text-xs bg-white text-[#242424]"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-semibold text-stone-600 uppercase mb-1">
+                      <label className="block text-[11px] font-semibold text-[#242424] uppercase mb-1">
                         Date *
                       </label>
                       <input
@@ -586,12 +636,12 @@ export default function InvitationForm({
                         required
                         value={evt.eventDate}
                         onChange={(e) => updateEvent(idx, 'eventDate', e.target.value)}
-                        className="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white"
+                        className="w-full px-3 py-2 rounded-xl border border-[#EAE4DC] text-xs bg-white text-[#242424]"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-semibold text-stone-600 uppercase mb-1">
+                      <label className="block text-[11px] font-semibold text-[#242424] uppercase mb-1">
                         Time *
                       </label>
                       <input
@@ -600,15 +650,15 @@ export default function InvitationForm({
                         value={evt.eventTime}
                         onChange={(e) => updateEvent(idx, 'eventTime', e.target.value)}
                         placeholder="10:00 AM / 06:00 PM"
-                        className="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white"
+                        className="w-full px-3 py-2 rounded-xl border border-[#EAE4DC] text-xs bg-white text-[#242424]"
                       />
                     </div>
                   </div>
 
                   <div className="grid sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[11px] font-semibold text-stone-600 uppercase mb-1">
-                        Venue &amp; Hall *
+                      <label className="block text-[11px] font-semibold text-[#242424] uppercase mb-1">
+                        Venue Hall / Lawn *
                       </label>
                       <input
                         type="text"
@@ -616,34 +666,34 @@ export default function InvitationForm({
                         value={evt.eventVenue}
                         onChange={(e) => updateEvent(idx, 'eventVenue', e.target.value)}
                         placeholder="Courtyard Lawn / Royal Orchid Palace"
-                        className="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white"
+                        className="w-full px-3 py-2 rounded-xl border border-[#EAE4DC] text-xs bg-white text-[#242424]"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-semibold text-stone-600 uppercase mb-1">
-                        Event Photo URL (Optional)
+                      <label className="block text-[11px] font-semibold text-[#242424] uppercase mb-1">
+                        Event Image URL (Optional)
                       </label>
                       <input
                         type="url"
                         value={evt.eventImage || ''}
                         onChange={(e) => updateEvent(idx, 'eventImage', e.target.value)}
                         placeholder="https://..."
-                        className="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white"
+                        className="w-full px-3 py-2 rounded-xl border border-[#EAE4DC] text-xs bg-white text-[#242424]"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-semibold text-stone-600 uppercase mb-1">
-                      Event Description
+                    <label className="block text-[11px] font-semibold text-[#242424] uppercase mb-1">
+                      Ceremony Description
                     </label>
                     <input
                       type="text"
                       value={evt.eventDescription || ''}
                       onChange={(e) => updateEvent(idx, 'eventDescription', e.target.value)}
-                      placeholder="A short note about the ceremony..."
-                      className="w-full px-3 py-2 rounded-xl border border-stone-300 text-xs bg-white"
+                      placeholder="A short note explaining the ceremony rituals..."
+                      className="w-full px-3 py-2 rounded-xl border border-[#EAE4DC] text-xs bg-white text-[#242424]"
                     />
                   </div>
                 </div>
@@ -655,11 +705,20 @@ export default function InvitationForm({
         {/* STEP 4: Venue */}
         {currentStep === 4 && (
           <div className="space-y-6 max-w-2xl">
-            <h2 className="text-xl font-serif font-bold text-stone-900">Step 4: Main Venue &amp; Destination</h2>
-            <p className="text-xs text-stone-500">Specify the location details and Google Maps URL for easy guest navigation.</p>
+            <div>
+              <span className="text-[11px] uppercase tracking-widest font-bold text-[#D4AF37]">
+                Step 4 of 7
+              </span>
+              <h2 className="text-2xl font-serif font-bold text-[#242424] mt-1">
+                Venue &amp; Google Maps Navigation
+              </h2>
+              <p className="text-xs text-[#777777] mt-1">
+                Provide the destination venue details and directions link for guests.
+              </p>
+            </div>
 
             <div>
-              <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-semibold text-[#242424] uppercase tracking-wider mb-2">
                 Venue Name *
               </label>
               <input
@@ -668,12 +727,12 @@ export default function InvitationForm({
                 value={formData.venueName || ''}
                 onChange={(e) => setFormData({ ...formData, venueName: e.target.value })}
                 placeholder="Royal Orchid Palace"
-                className="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:border-amber-600"
+                className="w-full px-4 py-3 rounded-xl border border-[#EAE4DC] bg-[#FAF8F5] text-sm text-[#242424] focus:outline-none focus:border-[#800020] focus:bg-white"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-semibold text-[#242424] uppercase tracking-wider mb-2">
                 Address Line *
               </label>
               <input
@@ -682,13 +741,13 @@ export default function InvitationForm({
                 value={formData.venueAddress || ''}
                 onChange={(e) => setFormData({ ...formData, venueAddress: e.target.value })}
                 placeholder="Near SG Highway, Bodakdev"
-                className="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:border-amber-600"
+                className="w-full px-4 py-3 rounded-xl border border-[#EAE4DC] bg-[#FAF8F5] text-sm text-[#242424] focus:outline-none focus:border-[#800020] focus:bg-white"
               />
             </div>
 
             <div className="grid sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#242424] uppercase tracking-wider mb-2">
                   City *
                 </label>
                 <input
@@ -697,12 +756,12 @@ export default function InvitationForm({
                   value={formData.city || ''}
                   onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                   placeholder="Ahmedabad"
-                  className="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:border-amber-600"
+                  className="w-full px-4 py-3 rounded-xl border border-[#EAE4DC] bg-[#FAF8F5] text-sm text-[#242424] focus:outline-none focus:border-[#800020] focus:bg-white"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#242424] uppercase tracking-wider mb-2">
                   State *
                 </label>
                 <input
@@ -711,33 +770,33 @@ export default function InvitationForm({
                   value={formData.state || ''}
                   onChange={(e) => setFormData({ ...formData, state: e.target.value })}
                   placeholder="Gujarat"
-                  className="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:border-amber-600"
+                  className="w-full px-4 py-3 rounded-xl border border-[#EAE4DC] bg-[#FAF8F5] text-sm text-[#242424] focus:outline-none focus:border-[#800020] focus:bg-white"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-[#242424] uppercase tracking-wider mb-2">
                   Country
                 </label>
                 <input
                   type="text"
                   value={formData.country || 'India'}
                   onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:border-amber-600"
+                  className="w-full px-4 py-3 rounded-xl border border-[#EAE4DC] bg-[#FAF8F5] text-sm text-[#242424] focus:outline-none focus:border-[#800020] focus:bg-white"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
-                Google Maps Directions URL
+              <label className="block text-xs font-semibold text-[#242424] uppercase tracking-wider mb-2">
+                Google Maps Navigation Link
               </label>
               <input
                 type="url"
                 value={formData.googleMapsUrl || ''}
                 onChange={(e) => setFormData({ ...formData, googleMapsUrl: e.target.value })}
-                placeholder="https://maps.google.com/?q=..."
-                className="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:border-amber-600"
+                placeholder="https://maps.google.com/?q=Royal+Orchid+Palace..."
+                className="w-full px-4 py-3 rounded-xl border border-[#EAE4DC] bg-[#FAF8F5] text-sm text-[#242424] focus:outline-none focus:border-[#800020] focus:bg-white"
               />
             </div>
           </div>
@@ -746,32 +805,45 @@ export default function InvitationForm({
         {/* STEP 5: Media & Music */}
         {currentStep === 5 && (
           <div className="space-y-8 max-w-3xl">
-            <h2 className="text-xl font-serif font-bold text-stone-900">Step 5: Photo Gallery &amp; Background Music</h2>
-            <p className="text-xs text-stone-500">Upload wedding photographs, pre-wedding memories, and ceremonial audio.</p>
+            <div>
+              <span className="text-[11px] uppercase tracking-widest font-bold text-[#D4AF37]">
+                Step 5 of 7
+              </span>
+              <h2 className="text-2xl font-serif font-bold text-[#242424] mt-1">
+                Photo Gallery &amp; Background Music
+              </h2>
+              <p className="text-xs text-[#777777] mt-1">
+                Upload pre-wedding photographs and background Shehnai audio.
+              </p>
+            </div>
 
-            {/* Background Music */}
-            <div className="p-6 rounded-2xl border border-stone-200 bg-stone-50/50 space-y-4">
-              <div className="flex items-center gap-2 text-amber-700 font-serif font-bold">
-                <Music className="w-5 h-5" />
-                <span>Background Music Settings</span>
+            {/* Audio Settings */}
+            <div className="p-6 rounded-3xl border border-[#EAE4DC] bg-[#FAF8F5]/60 space-y-4">
+              <div className="flex items-center gap-2">
+                <span className="p-2 rounded-xl bg-[#800020] text-white">
+                  <Music className="w-4 h-4 text-[#D4AF37]" />
+                </span>
+                <h3 className="font-serif font-bold text-base text-[#242424]">
+                  Background Audio Player Settings
+                </h3>
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-stone-700 uppercase mb-1">
-                    Music Track Title
+                  <label className="block text-xs font-semibold text-[#242424] uppercase mb-1">
+                    Track Title
                   </label>
                   <input
                     type="text"
                     value={formData.musicTitle || ''}
                     onChange={(e) => setFormData({ ...formData, musicTitle: e.target.value })}
                     placeholder="Indian Wedding Shehnai & Flute"
-                    className="w-full px-3.5 py-2 rounded-xl border border-stone-300 text-xs bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#EAE4DC] text-xs bg-white text-[#242424]"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-stone-700 uppercase mb-1">
+                  <label className="block text-xs font-semibold text-[#242424] uppercase mb-1">
                     Audio File URL (.mp3)
                   </label>
                   <input
@@ -779,10 +851,10 @@ export default function InvitationForm({
                     value={formData.musicUrl || ''}
                     onChange={(e) => setFormData({ ...formData, musicUrl: e.target.value })}
                     placeholder="https://.../music.mp3"
-                    className="w-full px-3.5 py-2 rounded-xl border border-stone-300 text-xs bg-white mb-2"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#EAE4DC] text-xs bg-white text-[#242424] mb-2"
                   />
-                  <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-stone-200 hover:bg-stone-300 text-stone-700 text-xs cursor-pointer">
-                    <Upload className="w-3.5 h-3.5" />
+                  <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#EAE4DC] text-[#242424] text-xs hover:border-[#800020] cursor-pointer shadow-2xs">
+                    <Upload className="w-3.5 h-3.5 text-[#D4AF37]" />
                     <span>{uploadingField === 'musicUrl' ? 'Uploading...' : 'Upload MP3'}</span>
                     <input
                       type="file"
@@ -801,25 +873,28 @@ export default function InvitationForm({
             {/* Gallery Images */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="font-serif font-bold text-base text-stone-900">Gallery Photographs</h3>
+                <h3 className="font-serif font-bold text-base text-[#242424]">Gallery Photographs</h3>
                 <button
                   type="button"
                   onClick={addGalleryImage}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-amber-600 text-white text-xs font-semibold hover:bg-amber-700 cursor-pointer"
+                  className="inline-flex items-center gap-1 px-3.5 py-2 rounded-xl bg-[#800020] text-white text-xs font-semibold hover:bg-[#580016] cursor-pointer shadow-2xs"
                 >
-                  <Plus className="w-3.5 h-3.5" />
-                  <span>Add Image</span>
+                  <Plus className="w-3.5 h-3.5 text-[#D4AF37]" />
+                  <span>Add Photo</span>
                 </button>
               </div>
 
               {formData.gallery?.map((img, idx) => (
-                <div key={idx} className="p-4 rounded-xl border border-stone-200 bg-stone-50/50 flex flex-col sm:flex-row items-center gap-4">
+                <div
+                  key={idx}
+                  className="p-4 rounded-2xl border border-[#EAE4DC] bg-[#FAF8F5]/60 flex flex-col sm:flex-row items-center gap-4"
+                >
                   {img.imageUrl ? (
-                    <div className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 border border-stone-300">
+                    <div className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 border border-[#EAE4DC] shadow-xs">
                       <Image src={img.imageUrl} alt="preview" fill className="object-cover" />
                     </div>
                   ) : (
-                    <div className="w-16 h-16 rounded-xl bg-stone-200 flex items-center justify-center text-stone-400 flex-shrink-0">
+                    <div className="w-16 h-16 rounded-xl bg-stone-200 flex items-center justify-center text-[#777777] flex-shrink-0">
                       <ImageIcon className="w-6 h-6" />
                     </div>
                   )}
@@ -830,21 +905,21 @@ export default function InvitationForm({
                       value={img.imageUrl}
                       onChange={(e) => updateGalleryItem(idx, 'imageUrl', e.target.value)}
                       placeholder="Image URL (https://...)"
-                      className="w-full px-3 py-2 rounded-lg border border-stone-300 text-xs bg-white"
+                      className="w-full px-3 py-2 rounded-xl border border-[#EAE4DC] text-xs bg-white text-[#242424]"
                     />
                     <input
                       type="text"
                       value={img.altText || ''}
                       onChange={(e) => updateGalleryItem(idx, 'altText', e.target.value)}
                       placeholder="Alt description / caption"
-                      className="w-full px-3 py-2 rounded-lg border border-stone-300 text-xs bg-white"
+                      className="w-full px-3 py-2 rounded-xl border border-[#EAE4DC] text-xs bg-white text-[#242424]"
                     />
                   </div>
 
                   <button
                     type="button"
                     onClick={() => removeGalleryItem(idx)}
-                    className="text-stone-400 hover:text-rose-600 cursor-pointer p-1"
+                    className="text-[#777777] hover:text-rose-600 cursor-pointer p-1"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -857,30 +932,42 @@ export default function InvitationForm({
         {/* STEP 6: Design & Template */}
         {currentStep === 6 && (
           <div className="space-y-8 max-w-3xl">
-            <h2 className="text-xl font-serif font-bold text-stone-900">Step 6: Invitation Template &amp; Styling</h2>
-            <p className="text-xs text-stone-500">Choose from 3 reusable wedding templates and fine-tune accent colors.</p>
+            <div>
+              <span className="text-[11px] uppercase tracking-widest font-bold text-[#D4AF37]">
+                Step 6 of 7
+              </span>
+              <h2 className="text-2xl font-serif font-bold text-[#242424] mt-1">
+                Choose Template &amp; Color Palette
+              </h2>
+              <p className="text-xs text-[#777777] mt-1">
+                Select from 3 reusable wedding designs and adjust color accents.
+              </p>
+            </div>
 
-            {/* Template Selector */}
-            <div className="grid sm:grid-cols-3 gap-4">
+            {/* Template Selector Cards */}
+            <div className="grid sm:grid-cols-3 gap-5">
               {[
                 {
                   id: 'royal',
                   name: 'Royal Indian Wedding',
-                  desc: 'Traditional maroon & gold palette, auspicious Sanskrit shloks, and majestic mandap vibes.',
+                  tag: 'Traditional',
+                  desc: 'Burgundy & gold palette, Sanskrit shloks, and ceremonial mandap grandeur.',
                   image:
                     'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=600&q=80',
                 },
                 {
                   id: 'floral',
                   name: 'Floral Elegant Wedding',
-                  desc: 'Soft romantic pastels, blush roses, delicate sage foliage, and charming gentle curves.',
+                  tag: 'Romantic',
+                  desc: 'Soft pastels, blush roses, sage greenery, and gentle romantic curves.',
                   image:
                     'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=600&q=80',
                 },
                 {
                   id: 'modern',
                   name: 'Modern Minimal Wedding',
-                  desc: 'Contemporary slate and champagne gold tones, clean typography, and sleek modern aesthetic.',
+                  tag: 'Contemporary',
+                  desc: 'Clean lines, deep slate with champagne gold, and editorial typography.',
                   image:
                     'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80',
                 },
@@ -888,49 +975,52 @@ export default function InvitationForm({
                 <div
                   key={tmpl.id}
                   onClick={() => setFormData({ ...formData, templateId: tmpl.id })}
-                  className={`rounded-2xl border-2 overflow-hidden cursor-pointer transition-all ${
+                  className={`rounded-3xl border-2 overflow-hidden cursor-pointer transition-all ${
                     formData.templateId === tmpl.id
-                      ? 'border-amber-600 ring-4 ring-amber-100 shadow-md scale-102'
-                      : 'border-stone-200 hover:border-stone-300'
+                      ? 'border-[#800020] ring-4 ring-[#800020]/15 shadow-md scale-102 bg-white'
+                      : 'border-[#EAE4DC] hover:border-[#D4AF37] bg-white'
                   }`}
                 >
-                  <div className="relative h-32 w-full">
+                  <div className="relative h-36 w-full">
                     <Image src={tmpl.image} alt={tmpl.name} fill className="object-cover" />
+                    <span className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-white/90 backdrop-blur text-[10px] uppercase font-bold text-[#800020] shadow-2xs">
+                      {tmpl.tag}
+                    </span>
                   </div>
-                  <div className="p-4 bg-white">
-                    <h3 className="font-serif font-bold text-sm text-stone-900">{tmpl.name}</h3>
-                    <p className="text-[11px] text-stone-500 mt-1 line-clamp-2">{tmpl.desc}</p>
+                  <div className="p-4">
+                    <h3 className="font-serif font-bold text-sm text-[#242424]">{tmpl.name}</h3>
+                    <p className="text-[11px] text-[#777777] mt-1 line-clamp-2">{tmpl.desc}</p>
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* Color Customizations */}
-            <div className="p-6 rounded-2xl border border-stone-200 bg-stone-50/50 space-y-4">
-              <h3 className="font-serif font-bold text-base text-stone-900">Color Palette</h3>
+            {/* Custom Color Controls */}
+            <div className="p-6 rounded-3xl border border-[#EAE4DC] bg-[#FAF8F5]/60 space-y-4">
+              <h3 className="font-serif font-bold text-base text-[#242424]">Color Theme Customization</h3>
               <div className="grid sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-stone-700 uppercase mb-1">
-                    Primary Accent Color
+                  <label className="block text-xs font-semibold text-[#242424] uppercase mb-1">
+                    Primary Accent
                   </label>
                   <div className="flex items-center gap-2">
                     <input
                       type="color"
                       value={formData.primaryColor || '#800020'}
                       onChange={(e) => setFormData({ ...formData, primaryColor: e.target.value })}
-                      className="w-10 h-10 rounded-lg cursor-pointer border border-stone-300 p-0.5"
+                      className="w-10 h-10 rounded-xl cursor-pointer border border-[#EAE4DC] p-0.5 bg-white"
                     />
                     <input
                       type="text"
                       value={formData.primaryColor || '#800020'}
                       onChange={(e) => setFormData({ ...formData, primaryColor: e.target.value })}
-                      className="flex-1 px-3 py-2 rounded-lg border border-stone-300 text-xs font-mono uppercase bg-white"
+                      className="flex-1 px-3 py-2 rounded-xl border border-[#EAE4DC] text-xs font-mono uppercase bg-white text-[#242424]"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-stone-700 uppercase mb-1">
+                  <label className="block text-xs font-semibold text-[#242424] uppercase mb-1">
                     Secondary Color
                   </label>
                   <div className="flex items-center gap-2">
@@ -938,19 +1028,19 @@ export default function InvitationForm({
                       type="color"
                       value={formData.secondaryColor || '#D4AF37'}
                       onChange={(e) => setFormData({ ...formData, secondaryColor: e.target.value })}
-                      className="w-10 h-10 rounded-lg cursor-pointer border border-stone-300 p-0.5"
+                      className="w-10 h-10 rounded-xl cursor-pointer border border-[#EAE4DC] p-0.5 bg-white"
                     />
                     <input
                       type="text"
                       value={formData.secondaryColor || '#D4AF37'}
                       onChange={(e) => setFormData({ ...formData, secondaryColor: e.target.value })}
-                      className="flex-1 px-3 py-2 rounded-lg border border-stone-300 text-xs font-mono uppercase bg-white"
+                      className="flex-1 px-3 py-2 rounded-xl border border-[#EAE4DC] text-xs font-mono uppercase bg-white text-[#242424]"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-stone-700 uppercase mb-1">
+                  <label className="block text-xs font-semibold text-[#242424] uppercase mb-1">
                     Background Tint
                   </label>
                   <div className="flex items-center gap-2">
@@ -958,13 +1048,13 @@ export default function InvitationForm({
                       type="color"
                       value={formData.backgroundColor || '#FFFDF9'}
                       onChange={(e) => setFormData({ ...formData, backgroundColor: e.target.value })}
-                      className="w-10 h-10 rounded-lg cursor-pointer border border-stone-300 p-0.5"
+                      className="w-10 h-10 rounded-xl cursor-pointer border border-[#EAE4DC] p-0.5 bg-white"
                     />
                     <input
                       type="text"
                       value={formData.backgroundColor || '#FFFDF9'}
                       onChange={(e) => setFormData({ ...formData, backgroundColor: e.target.value })}
-                      className="flex-1 px-3 py-2 rounded-lg border border-stone-300 text-xs font-mono uppercase bg-white"
+                      className="flex-1 px-3 py-2 rounded-xl border border-[#EAE4DC] text-xs font-mono uppercase bg-white text-[#242424]"
                     />
                   </div>
                 </div>
@@ -976,47 +1066,58 @@ export default function InvitationForm({
         {/* STEP 7: Review & Publish */}
         {currentStep === 7 && (
           <div className="space-y-6 max-w-2xl">
-            <h2 className="text-xl font-serif font-bold text-stone-900">Step 7: Review &amp; Publish</h2>
-            <p className="text-xs text-stone-500">
-              Review your invitation details before saving as draft or publishing live.
-            </p>
+            <div>
+              <span className="text-[11px] uppercase tracking-widest font-bold text-[#D4AF37]">
+                Step 7 of 7
+              </span>
+              <h2 className="text-2xl font-serif font-bold text-[#242424] mt-1">
+                Review &amp; Publish Invitation
+              </h2>
+              <p className="text-xs text-[#777777] mt-1">
+                Inspect summary details before saving as draft or publishing publicly.
+              </p>
+            </div>
 
-            <div className="p-6 rounded-3xl border-2 border-amber-300 bg-amber-50/40 space-y-4">
+            <div className="p-8 rounded-3xl border border-[#D4AF37]/50 bg-[#FFFDF9] shadow-md space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-[11px] uppercase tracking-wider font-bold text-amber-700">
-                    Template: {formData.templateId?.toUpperCase()}
+                  <span className="text-[11px] uppercase tracking-wider font-bold text-[#D4AF37]">
+                    Selected Template: {formData.templateId?.toUpperCase()}
                   </span>
-                  <h3 className="text-2xl font-serif font-bold text-stone-900 mt-1">
+                  <h3 className="text-3xl font-serif font-bold text-[#800020] mt-1">
                     {formData.groomName || 'Groom'} &amp; {formData.brideName || 'Bride'}
                   </h3>
                 </div>
                 <span
                   className={`px-3 py-1 rounded-full text-xs font-semibold uppercase ${
                     formData.status === 'published'
-                      ? 'bg-emerald-100 text-emerald-800'
-                      : 'bg-amber-100 text-amber-800'
+                      ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                      : 'bg-amber-50 text-amber-800 border border-amber-200'
                   }`}
                 >
                   {formData.status}
                 </span>
               </div>
 
-              <div className="border-t border-amber-200/60 pt-3 text-xs space-y-1.5 text-stone-600">
+              <div className="border-t border-[#EAE4DC] pt-4 text-xs space-y-2 text-[#777777]">
                 <p>
-                  <strong>Slug:</strong> /wedding/{formData.slug}
+                  <strong className="text-[#242424]">Public URL:</strong> /wedding/{formData.slug}
                 </p>
                 <p>
-                  <strong>Wedding Date:</strong> {formData.weddingDate} at {formData.weddingTime}
+                  <strong className="text-[#242424]">Date:</strong> {formData.weddingDate} at{' '}
+                  {formData.weddingTime} ({formData.timezone})
                 </p>
                 <p>
-                  <strong>Venue:</strong> {formData.venueName}, {formData.city}, {formData.state}
+                  <strong className="text-[#242424]">Venue:</strong> {formData.venueName},{' '}
+                  {formData.city}, {formData.state}
                 </p>
                 <p>
-                  <strong>Events Scheduled:</strong> {formData.events?.length || 0} ceremonies
+                  <strong className="text-[#242424]">Ceremonies:</strong> {formData.events?.length || 0}{' '}
+                  scheduled
                 </p>
                 <p>
-                  <strong>Gallery Photos:</strong> {formData.gallery?.length || 0} photos
+                  <strong className="text-[#242424]">Gallery Photos:</strong>{' '}
+                  {formData.gallery?.length || 0} moments uploaded
                 </p>
               </div>
             </div>
@@ -1026,7 +1127,7 @@ export default function InvitationForm({
                 type="button"
                 disabled={loading}
                 onClick={() => handleSubmit('draft')}
-                className="flex-1 py-3.5 rounded-xl border border-stone-300 bg-white hover:bg-stone-50 text-stone-700 text-xs font-semibold shadow-sm cursor-pointer disabled:opacity-50"
+                className="flex-1 py-3.5 rounded-xl border border-[#EAE4DC] bg-white hover:bg-[#FAF8F5] text-[#242424] text-xs font-semibold shadow-2xs cursor-pointer disabled:opacity-50"
               >
                 {loading ? 'Saving...' : 'Save as Draft'}
               </button>
@@ -1035,22 +1136,22 @@ export default function InvitationForm({
                 type="button"
                 disabled={loading}
                 onClick={() => handleSubmit('published')}
-                className="flex-1 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                className="flex-1 py-3.5 rounded-xl bg-[#800020] hover:bg-[#580016] text-white text-xs font-semibold shadow-lg shadow-[#800020]/25 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
               >
-                <Sparkles className="w-4 h-4" />
+                <Sparkles className="w-4 h-4 text-[#D4AF37]" />
                 <span>{loading ? 'Publishing...' : 'Publish Invitation Live'}</span>
               </button>
             </div>
           </div>
         )}
 
-        {/* Wizard Footer Navigation Controls */}
-        <div className="mt-10 pt-6 border-t border-stone-200 flex items-center justify-between">
+        {/* Wizard Stepper Controls */}
+        <div className="mt-10 pt-6 border-t border-[#EAE4DC] flex items-center justify-between">
           <button
             type="button"
             disabled={currentStep === 1}
             onClick={() => setCurrentStep((prev) => Math.max(1, prev - 1))}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-stone-300 text-xs font-semibold text-stone-700 hover:bg-stone-50 disabled:opacity-30 cursor-pointer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#EAE4DC] text-xs font-semibold text-[#242424] hover:bg-[#FAF8F5] disabled:opacity-30 cursor-pointer transition-all"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Previous</span>
@@ -1060,10 +1161,10 @@ export default function InvitationForm({
             <button
               type="button"
               onClick={() => setCurrentStep((prev) => Math.min(7, prev + 1))}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#800020] hover:bg-[#580016] text-white text-xs font-semibold shadow-xs cursor-pointer transition-all"
             >
               <span>Next Step</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4 text-[#D4AF37]" />
             </button>
           ) : null}
         </div>

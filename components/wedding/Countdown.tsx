@@ -62,8 +62,8 @@ export default function Countdown({
 
   if (timeLeft.isPast) {
     return (
-      <div className="text-center py-4 px-6 rounded-2xl bg-white/70 backdrop-blur border border-amber-200 shadow-sm max-w-md mx-auto">
-        <p className="text-lg font-serif italic text-amber-900">
+      <div className="text-center py-4 px-6 rounded-2xl bg-white/80 backdrop-blur border border-[#D4AF37]/40 shadow-sm max-w-md mx-auto">
+        <p className="text-lg font-serif italic text-[#800020]">
           The auspicious wedding day has arrived! Together forever.
         </p>
       </div>
@@ -71,12 +71,12 @@ export default function Countdown({
   }
 
   return (
-    <div className="flex flex-wrap justify-center gap-3 sm:gap-5 max-w-xl mx-auto">
+    <div className="flex flex-wrap justify-center gap-3 sm:gap-6 max-w-xl mx-auto">
       {units.map((unit) => (
         <div
           key={unit.label}
-          className="flex flex-col items-center justify-center w-16 h-20 sm:w-24 sm:h-28 rounded-2xl bg-white/80 backdrop-blur-md shadow-lg border border-amber-200/60 transition-transform duration-300 hover:scale-105"
-          style={{ borderColor: `${accentColor}40` }}
+          className="flex flex-col items-center justify-center w-18 h-22 sm:w-24 sm:h-28 rounded-2xl bg-white/90 backdrop-blur-md shadow-md border transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+          style={{ borderColor: `${accentColor}50` }}
         >
           <span
             className="text-2xl sm:text-4xl font-bold font-serif tracking-tight"
@@ -84,7 +84,7 @@ export default function Countdown({
           >
             {String(unit.value).padStart(2, '0')}
           </span>
-          <span className="text-[10px] sm:text-xs uppercase tracking-widest font-semibold mt-1 text-stone-600">
+          <span className="text-[10px] sm:text-xs uppercase tracking-widest font-semibold mt-1 text-stone-500">
             {unit.label}
           </span>
         </div>
