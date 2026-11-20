@@ -18,6 +18,16 @@ export const metadata: Metadata = {
   title: 'VivaahInvites - Dynamic Wedding Invitation Management Platform',
   description:
     'Create, manage and publish beautiful dynamic Indian wedding invitations with personalized URLs, live countdowns, music and photo galleries.',
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/icon.png', type: 'image/png', sizes: '64x64' },
+      { url: '/favicon.ico', sizes: '32x32' },
+    ],
+    apple: [
+      { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
 };
 
 export default function RootLayout({

@@ -6,7 +6,7 @@ import { getSession } from '@/lib/auth';
 
 interface Props {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ preview?: string }>;
+  searchParams: Promise<{ preview?: string; template?: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -63,7 +63,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function WeddingPublicPage({ params, searchParams }: Props) {
   const { slug } = await params;
-  const { preview } = await searchParams;
+  const { preview, template } = await searchParams;
 
   const session = await getSession();
   const isPreview = preview === 'true' && !!session;
@@ -75,6 +75,11 @@ export default async function WeddingPublicPage({ params, searchParams }: Props)
     notFound();
   }
 
+  const invitationData = JSON.parse(JSON.stringify(invitation));
+  if (template) {
+    invitationData.templateId = template;
+  }
+
   return (
     <main className="relative min-h-screen">
       {isPreview && (
@@ -82,7 +87,7 @@ export default async function WeddingPublicPage({ params, searchParams }: Props)
           <span>⚠️ Admin Preview Mode — This invitation is currently {invitation.status}.</span>
         </div>
       )}
-      <InvitationRenderer invitation={JSON.parse(JSON.stringify(invitation))} />
+      <InvitationRenderer invitation={invitationData} />
     </main>
   );
 }

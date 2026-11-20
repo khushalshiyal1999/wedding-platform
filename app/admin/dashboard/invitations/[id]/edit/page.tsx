@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import AdminHeader from '@/components/admin/AdminHeader';
 import InvitationForm from '@/components/admin/InvitationForm';
@@ -25,11 +25,13 @@ export default async function EditInvitationPage({
         subtitle={`Update wedding details, media, schedule and design for /wedding/${invitation.slug}`}
       />
       <div className="p-6 sm:p-8 max-w-5xl mx-auto">
-        <InvitationForm
-          initialData={JSON.parse(JSON.stringify(invitation))}
-          isEditing={true}
-          invitationId={id}
-        />
+        <Suspense fallback={<div className="p-8 text-center text-xs text-stone-500">Loading editor...</div>}>
+          <InvitationForm
+            initialData={JSON.parse(JSON.stringify(invitation))}
+            isEditing={true}
+            invitationId={id}
+          />
+        </Suspense>
       </div>
     </div>
   );

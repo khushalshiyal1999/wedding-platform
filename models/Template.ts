@@ -30,7 +30,7 @@ const TemplateSchema = new Schema<TemplateDocument>(
     category: {
       type: String,
       required: true,
-      enum: ['traditional', 'floral', 'modern'],
+      enum: ['traditional', 'royal', 'floral', 'minimal', 'modern', 'heritage', 'bohemian', 'cinematic'],
       default: 'traditional',
     },
     isActive: {

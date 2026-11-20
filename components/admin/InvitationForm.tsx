@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { IInvitation, IWeddingEvent, IGalleryItem } from '@/types';
 import {
@@ -37,6 +37,9 @@ export default function InvitationForm({
   invitationId,
 }: InvitationFormProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const templateParam = searchParams?.get('template');
+
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [uploadingField, setUploadingField] = useState<string | null>(null);
@@ -49,7 +52,7 @@ export default function InvitationForm({
     slug: initialData?.slug || '',
     description: initialData?.description || '',
     status: initialData?.status || 'draft',
-    templateId: initialData?.templateId || 'royal',
+    templateId: initialData?.templateId || templateParam || 'royal',
 
     weddingDate: initialData?.weddingDate || '2027-02-14',
     weddingTime: initialData?.weddingTime || '18:00',
@@ -940,12 +943,12 @@ export default function InvitationForm({
                 Choose Template &amp; Color Palette
               </h2>
               <p className="text-xs text-[#777777] mt-1">
-                Select from 3 reusable wedding designs and adjust color accents.
+                Select from 11 reusable wedding designs and adjust color accents.
               </p>
             </div>
 
             {/* Template Selector Cards */}
-            <div className="grid sm:grid-cols-3 gap-5">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-h-[580px] overflow-y-auto p-1 pr-2">
               {[
                 {
                   id: 'royal',
@@ -971,6 +974,70 @@ export default function InvitationForm({
                   image:
                     'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80',
                 },
+                {
+                  id: 'royal-palace',
+                  name: 'Royal Palace',
+                  tag: 'Royal',
+                  desc: 'Palatial architecture, deep royal maroon, antique gold filigree and Jharokha arches.',
+                  image:
+                    'https://images.unsplash.com/photo-1599818496464-9fc21976a445?auto=format&fit=crop&w=600&q=80',
+                },
+                {
+                  id: 'pastel-garden',
+                  name: 'Pastel Garden',
+                  tag: 'Floral',
+                  desc: 'Blush pink and sage greenery with botanical wreaths and soft watercolor blossoms.',
+                  image:
+                    'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=600&q=80',
+                },
+                {
+                  id: 'gujarati',
+                  name: 'Traditional Gujarati',
+                  tag: 'Traditional',
+                  desc: 'Auspicious crimson red and saffron gold, Toran border, Kalash motifs, and Garba beats.',
+                  image:
+                    'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80',
+                },
+                {
+                  id: 'minimal-luxury',
+                  name: 'Minimal Luxury',
+                  tag: 'Minimal',
+                  desc: 'Ivory whitespace, obsidian black typography, and hairline gold rules for high-fashion editorial.',
+                  image:
+                    'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80',
+                },
+                {
+                  id: 'peacock',
+                  name: 'Peacock Elegance',
+                  tag: 'Royal',
+                  desc: 'Opulent jewel tones with peacock navy, turquoise, emerald, and Mor-Pankh feather motifs.',
+                  image:
+                    'https://images.unsplash.com/photo-1544077960-604201fe74bc?auto=format&fit=crop&w=600&q=80',
+                },
+                {
+                  id: 'bohemian',
+                  name: 'Bohemian Sunset',
+                  tag: 'Bohemian',
+                  desc: 'Warm terracotta, desert sand, sunburst accents, organic rounded arches, and relaxed golden-hour romance.',
+                  image:
+                    'https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&w=600&q=80',
+                },
+                {
+                  id: 'mughal',
+                  name: 'Mughal Heritage',
+                  tag: 'Heritage',
+                  desc: 'Imperial emerald and sandstone courtly aesthetics with Persian Mehrab arches and Shahi Farman grandeur.',
+                  image:
+                    'https://images.unsplash.com/photo-1566552881560-0be86c53210f?auto=format&fit=crop&w=600&q=80',
+                },
+                {
+                  id: 'cinematic',
+                  name: 'Cinematic Love Story',
+                  tag: 'Cinematic',
+                  desc: 'Dramatic widescreen movie premiere aesthetic with velvet dark backgrounds, cinema gold, and film reels.',
+                  image:
+                    'https://images.unsplash.com/photo-1532712938310-34cb3982ef74?auto=format&fit=crop&w=600&q=80',
+                },
               ].map((tmpl) => (
                 <div
                   key={tmpl.id}
@@ -981,13 +1048,13 @@ export default function InvitationForm({
                       : 'border-[#EAE4DC] hover:border-[#D4AF37] bg-white'
                   }`}
                 >
-                  <div className="relative h-36 w-full">
+                  <div className="relative h-32 w-full">
                     <Image src={tmpl.image} alt={tmpl.name} fill className="object-cover" />
                     <span className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-white/90 backdrop-blur text-[10px] uppercase font-bold text-[#800020] shadow-2xs">
                       {tmpl.tag}
                     </span>
                   </div>
-                  <div className="p-4">
+                  <div className="p-3.5">
                     <h3 className="font-serif font-bold text-sm text-[#242424]">{tmpl.name}</h3>
                     <p className="text-[11px] text-[#777777] mt-1 line-clamp-2">{tmpl.desc}</p>
                   </div>

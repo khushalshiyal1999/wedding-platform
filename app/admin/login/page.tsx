@@ -10,7 +10,6 @@ import {
   Mail,
   AlertCircle,
   ArrowRight,
-  Check,
   Eye,
   EyeOff,
   Heart,
@@ -28,12 +27,6 @@ function LoginForm() {
   const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const handleFillDemo = () => {
-    setEmail('admin@wedding.com');
-    setPassword('Admin@123456');
-    setError(null);
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -167,22 +160,6 @@ function LoginForm() {
           <ArrowRight className="w-4 h-4 text-[#D4AF37]" />
         </button>
       </form>
-
-      {/* Elegant Informational Helper */}
-      <div className="mt-8 pt-6 border-t border-[#EAE4DC] flex items-center justify-between bg-[#FAF8F5] -mx-8 -mb-8 p-6 sm:-mx-12 sm:-mb-12">
-        <div className="text-[11px] text-[#777777]">
-          <span className="font-semibold text-[#242424] block">Default Administrator:</span>
-          <span>admin@wedding.com</span>
-        </div>
-        <button
-          type="button"
-          onClick={handleFillDemo}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#EAE4DC] text-[#800020] hover:bg-[#800020] hover:text-white text-xs font-semibold transition-all cursor-pointer shadow-xs"
-        >
-          <Check className="w-3.5 h-3.5" />
-          <span>Auto-Fill</span>
-        </button>
-      </div>
     </div>
   );
 }

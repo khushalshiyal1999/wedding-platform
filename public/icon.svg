@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <!-- Background Gradient: Rich Royal Burgundy -->
+    <linearGradient id="burgundyBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9E002C" />
+      <stop offset="50%" stop-color="#800020" />
+      <stop offset="100%" stop-color="#550015" />
+    </linearGradient>
+
+    <!-- Gold Gradient: Champagne & Antique Gold -->
+    <linearGradient id="goldSheen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF3C4" />
+      <stop offset="30%" stop-color="#F5D77F" />
+      <stop offset="70%" stop-color="#D4AF37" />
+      <stop offset="100%" stop-color="#AA821A" />
+    </linearGradient>
+
+    <!-- Core Star Glow -->
+    <linearGradient id="coreStar" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="60%" stop-color="#FFF3C4" />
+      <stop offset="100%" stop-color="#F2D175" />
+    </linearGradient>
+  </defs>
+
+  <!-- Base Rounded Squircle with Gold Edge -->
+  <rect x="2" y="2" width="60" height="60" rx="16" ry="16" fill="url(#burgundyBg)" stroke="url(#goldSheen)" stroke-width="2.5" />
+
+  <!-- Inner subtle hairline accent -->
+  <rect x="5.5" y="5.5" width="53" height="53" rx="13" ry="13" fill="none" stroke="#D4AF37" stroke-width="0.75" stroke-opacity="0.35" />
+
+  <!-- Monogram "V" + Royal Sparkle Group -->
+  <g>
+    <!-- Stylized Royal Serif "V" -->
+    <path d="M15 19 L21.5 19 L29 44 L32.5 44 L40 19 L46.5 19 L46.5 21 L43.5 21.5 L34.5 47 L27 47 L18 21.5 L15 21 Z" 
+          fill="url(#goldSheen)" />
+
+    <!-- Radiant 4-point Sparkle Star positioned elegantly at top-right -->
+    <path d="M45 8 C45 13.5 47.5 16 53 16.5 C47.5 17 45 19.5 45 25 C45 19.5 42.5 17 37 16.5 C42.5 16 45 13.5 45 8 Z" 
+          fill="url(#coreStar)" />
+    <circle cx="45" cy="16.5" r="1.2" fill="#D4AF37" />
+
+    <!-- Tiny companion sparkle at bottom left -->
+    <path d="M20 34 C20 36.5 21 37.5 23.5 38 C21 38.5 20 39.5 20 42 C20 39.5 19 38.5 16.5 38 C19 37.5 20 36.5 20 34 Z" 
+          fill="url(#goldSheen)" opacity="0.9" />
+  </g>
+</svg>
